@@ -1,26 +1,38 @@
 @import "tailwindcss";
 
+@theme {
+  --color-base: #FFF9F0;
+  --color-base-secondary: #F7F2EA;
+  --color-primary: #E07A5F;
+  --color-primary-light: #F2B5A5;
+  --color-text: #4A403A;
+  --color-text-light: #8D7F79;
+  --color-accent: #E9C46A;
+  --color-success: #6A994E;
+  --font-serif: var(--font-noto-serif), serif;
+  --font-sans: var(--font-noto-sans), sans-serif;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: var(--color-base);
+  --foreground: var(--color-text);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Custom Animations */
+@keyframes wave {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(0.5); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
+}
+
+.animate-wave {
+  animation: wave 2s infinite;
 }
