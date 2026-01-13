@@ -22,6 +22,7 @@ export default function ExperienceModal({ isOpen, onClose }: ExperienceModalProp
   const [isTyping, setIsTyping] = useState(false)
   const [step, setStep] = useState(0)
   const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -38,6 +39,7 @@ export default function ExperienceModal({ isOpen, onClose }: ExperienceModalProp
       setStep(0)
       setSubmitSuccess(false)
       setEmail('')
+      setName('')
       startSimulation()
     }
   }, [isOpen])
@@ -114,12 +116,11 @@ export default function ExperienceModal({ isOpen, onClose }: ExperienceModalProp
 
     setTimeout(() => {
       addMessage(
-        <div className="bg-white text-text p-3 rounded-lg shadow-sm border-l-4 border-success">
+        <div className="bg白 text-text p-3 rounded-lg shadow-sm border-l-4 border-success">
           <div className="font-bold text-success mb-1">已確認安全</div>
           <div className="text-sm">
             張伯伯沒事！他在後院澆花，手機忘在臥室充電了。讓您別擔心。
           </div>
-          {/* Mock Image Placeholder */}
           <div className="mt-2 h-24 bg-base-secondary rounded flex items-center justify-center text-text-light text-xs">
             [現場照片]
           </div>
@@ -137,9 +138,11 @@ export default function ExperienceModal({ isOpen, onClose }: ExperienceModalProp
     
     setIsSubmitting(true)
     try {
+      const userAgent = typeof navigator !== 'undefined' ? navigator.userAgent : null
+      const referrer = typeof document !== 'undefined' ? document.referrer : null
       const { error } = await supabase
-        .from('leads')
-        .insert([{ email, role: 'family', source: 'simulation' }])
+        .from('safe_check_leads')
+        .insert([{ email, name, user_agent: userAgent, referrer }])
       
       if (error) throw error
       
@@ -247,6 +250,13 @@ export default function ExperienceModal({ isOpen, onClose }: ExperienceModalProp
               {step === 6 && !submitSuccess && (
                 <form onSubmit={handleLeadSubmit} className="space-y-3">
                   <p className="text-sm text-text font-medium mb-2">想為家人建立這套守護網嗎？</p>
+                  <input 
+                    type="text" 
+                    placeholder="您的稱呼" 
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full p-3 bg-base border border-base-secondary rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-text"
+                  />
                   <input 
                     type="email" 
                     placeholder="輸入 Email 獲取完整方案" 
