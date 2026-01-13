@@ -33,13 +33,13 @@ export default function Home() {
         <SocialProof />
       </section>
 
+      {/* Section C: 預約與轉化 */}
+      <CTA onStartSimulation={openSimulation} />
+      
       {/* FAQ: 常見問題 */}
       <section id="faq">
         <FAQ />
       </section>
-      
-      {/* Section C: 預約與轉化 */}
-      <CTA onStartSimulation={openSimulation} />
       
       {/* Footer */}
       <Footer />
