@@ -23,15 +23,28 @@ if (!isConfigured) {
   )
 }
 
+type SupabaseLike = {
+  from: (_table: string) => {
+    select: () => Promise<{ data: unknown; error: { message: string } | null }>;
+    insert: (_rows?: unknown) => Promise<{ data: unknown; error: { message: string } | null }>;
+  };
+  auth: {
+    getSession: () => Promise<{ data: { session: unknown }; error: null }>;
+    onAuthStateChange: () => { data: { subscription: { unsubscribe: () => void } } };
+  };
+};
+
+const mockSupabase: SupabaseLike = {
+  from: (_table: string) => ({
+    select: () => Promise.resolve({ data: [], error: { message: 'Supabase not configured' } }),
+    insert: (_rows?: unknown) => Promise.resolve({ data: null, error: { message: 'Supabase not configured' } }),
+  }),
+  auth: {
+    getSession: () => Promise.resolve({ data: { session: null }, error: null }),
+    onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } })
+  }
+};
+
 export const supabase = isConfigured
   ? createClient(supabaseUrl!, supabaseAnonKey!)
-  : {
-      from: (table: string) => ({
-        select: () => Promise.resolve({ data: [], error: { message: 'Supabase not configured' } }),
-        insert: () => Promise.resolve({ data: null, error: { message: 'Supabase not configured' } }),
-      }),
-      auth: {
-        getSession: () => Promise.resolve({ data: { session: null }, error: null }),
-        onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } })
-      }
-    } as any
+  : mockSupabase

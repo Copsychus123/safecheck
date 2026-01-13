@@ -136,8 +136,8 @@ export default function ExperienceModal({ isOpen, onClose }: ExperienceModalProp
     e.preventDefault()
     if (!email) return
     
-    setIsSubmitting(true)
-    try {
+  setIsSubmitting(true)
+  try {
       const userAgent = typeof navigator !== 'undefined' ? navigator.userAgent : null
       const referrer = typeof document !== 'undefined' ? document.referrer : null
       const { error } = await supabase

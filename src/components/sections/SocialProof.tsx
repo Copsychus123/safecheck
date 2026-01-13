@@ -48,7 +48,7 @@ export default function SocialProof() {
             >
               <Quote className="w-10 h-10 text-primary/20 mb-6" />
               <p className="text-text leading-relaxed mb-8 font-medium">
-                "{story.content}"
+                {story.content}
               </p>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
